@@ -28,22 +28,24 @@ class Mapa:
                     for y_i in range(5): # dim 6x5
                         c = ((x-1)*6+x_i+1, (y-1)*5+y_i+1)  #posicion: (X-1)*n°elementos en c/X + pos x_i + 1
                         coord = Coordenada(c, nodo)
-                        self.coordenadas.update(coord)
+                        self.coordenadas.update({c: coord})
                     if x == 1 or x == 11:   # caso borde,
                         for y_ii in range(5):
                             c = ((x-1)*6+1, (y-1)*5+y_ii+1)
                             coord = Coordenada(c, nodo)
-                            self.coordenadas.update(coord)
+                            self.coordenadas.update({c: coord})
                             c = ((x-1)*6+5+1, (y-1)*5+y_ii+1)
                             coord = Coordenada(c, nodo)
-                            self.coordenadas.update(coord)
+                            self.coordenadas.update({c: coord})
 
         # ubicar productos en su posicion
         for x in [2, 11]:
             for y in range(1, Y+1):
                 for lado in [-1, 1]:
                     posicion = (x,y)
-                    g = Gondola(posicion, lado, next(familias))
+                    fam = next(familias)
+                    # print('len familia {}: '.format((x,y)), len(fam))
+                    g = Gondola(posicion, lado, (i for i in fam), len(fam))
                     self.gondolas.update({posicion: g})
                     self.productos.update(g.productos)
 
@@ -114,19 +116,21 @@ class Mapa:
         ruta.append(nodo_final)
         return ruta
 
+    def generar_camino_de_coordenadas(self, coord_actual, coord_final, camino_nodos):
+        pass
 
 class Nodo:
 
     def __init__(self, x, y):
         self.coord = (x, y)
         self.arcos = []
-        self.mapita = Mapita()
 
 
 class Coordenada:
 
     def __init__(self, coord, nodo):
         self.coord = coord
+        self.nodo = nodo
 
 
 class Arco:
@@ -146,7 +150,7 @@ class Producto:
 
 class Gondola:
 
-    def __init__(self, posicion, lado, productos_gondola):  # productos_gondola es un generador con todos los prod ordenados
+    def __init__(self, posicion, lado, productos_gondola, len_familia):  # productos_gondola es un generador con todos los prod ordenados
         self.posicion = posicion  # coordenada mas cercana al origen del mapa de coordenadas: (x, 2) o (x,11) para 1 <= x <= 15
         self.lado = 0  # lado es izquierda sis lado = -1, es derecha si lado = 1
         self.productos = {}
@@ -164,7 +168,7 @@ class Gondola:
                         nodo = (1+6*(posicion[0]-1), round((11*5+y)/5))
                         coord = (1+6*(posicion[0]-1), 11*5+y)
                         prod = Producto(int(next(productos_gondola)), nodo, coord)
-                        self.productos.update({prod.id, prod})
+                        self.productos.update({prod.id: prod})
         else:
             if self.posicion[1] == 2:
                 for y in range(1, 9*5 + 1):
@@ -185,7 +189,9 @@ class Gondola:
         except StopIteration:
             pass
         else:
-            print('error de numero de productos en una gondola {}'.format(self.posicion))
+            print('error de numero de productos en una gondola', self.posicion)
+            print('len productos: ', len(self.productos))
+            print()
             exit()
 
 

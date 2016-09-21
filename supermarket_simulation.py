@@ -24,10 +24,11 @@ TNOW = time.time()
 
 class Supermercado:
 
-    def __init__(self, env, mapa, tasa):
+    def __init__(self, env, mapa, tasa, canastas):
         self.env = env
 
         self.mapa = mapa
+        self.canastas = canastas_basicas
 
         self.tasa_de_llegada = tasa
         self.clientes = {}
@@ -54,7 +55,12 @@ class Supermercado:
     def llegada_de_cliente(self):
         # en los ultimos 15 minutos no puedde entrar nade que haga una compra mas grande que 10 min
         if hora_de_termino*60 - 15 > self.env.now:
-            cliente = Cliente(self.env, self)
+
+            index_canasta = random.randint(0, len(self.canastas) - 1)
+            canasta = self.canastas[index_canasta]
+            self.canastas.pop(index_canasta)
+
+            cliente = Cliente(self.env, self, canasta)
             self.clientes[round(self.env.now//60 - 8)].append(cliente)
 
             yield self.env.process(cliente.comprar())
@@ -67,25 +73,25 @@ class Supermercado:
 class Cliente:
     id = 0
 
-    def __init__(self, env, super):
+    def __init__(self, env, super, canasta):
         self.super = super
         self.env = env
         self.id = Cliente.id
         Cliente.id += 1
 
         # productos
-        self.canasta_base = []
-
+        self.canasta_base = canasta
 
         # estado posicion
-        self.posicion_actual = ()
+        self.coord_actual = -1
+        self.nodo_actual = -1
         self.pasillo_actual = -1
         self.velocidad_cliente = -1
         self.tiempo_de_llegada_ = -1
         self.tiempo_de_salida = -1
 
         # estado del cliente
-        self.tiempo_al_siguiente_producto = -1
+        self.tiempo_al_siguiente_producto = -1  # depende del largo del camino
         self.camino_a_siguiente_producto = -1
         self.tiempo_en_el_super = 0
 
@@ -95,7 +101,7 @@ class Cliente:
         self.productos_comprados = []
         self.canasta_tentados = []
 
-    def generar_canasta(self):  # canasta inicial
+    def generar_canasta(self):  # canasta inicial (si la generamos aleatoriamente)
         pass
 
     def siguiente_producto(self):
@@ -108,10 +114,10 @@ class Cliente:
                     siguiente_producto = i
                     distancia = distancia_i
 
-        posicion_prod = self.super.mapa.productos[siguiente_producto].nodo
-        dir_x = '+' if self.canasta_base[0].x - self.posicion_actual[0] < 0 else 1
+        nodo_prod = self.super.mapa.productos[siguiente_producto].nodo
+        self.actualizar_posicion_cliente()
 
-        camino = ()
+
         return siguiente_producto, distancia
 
     def caminar_a_siguiente_producto(self):
@@ -127,7 +133,8 @@ class Cliente:
         pass
 
     def actualizar_posicion_cliente(self):
-        pass
+        # actualizar coordenada calculando todo lo que ha avanzado el cliente desde la primera posicion
+        self.nodo_actual = self.super.mapa.coordenadas[self.coord_actual].nodo
 
     def caminar_a_la_caja(self):
         pass
@@ -141,11 +148,33 @@ class Cliente:
             # eliminar prod de la canasta base
             self.recoger_producto()
             # yiel ...
-            
+
         self.caminar_a_la_caja()
         #yield ...
 
 
+class Boleta:
+    id = 0
+
+    def __init__(self, p):
+        self.id = Boleta.id
+        Boleta.id += 1
+
+
+'''generar canastas basicas a partir de boletas en bdd'''
+canastas_basicas = []
+with open('retail.dat', 'r') as file:
+    lista = file.readlines()
+    j=0
+    for p in lista:
+        j+=1
+        productos = p.split()
+        for i in range(len(productos)):
+            productos[i] = int(productos[i])
+        canastas_basicas.append(productos)
+
+
+'''Simulacion'''
 env = simpy.Environment(hora_de_inicio*60)
-super = Supermercado(env, mapa, tasa_de_llegada)
+super = Supermercado(env, mapa, tasa_de_llegada, canastas_basicas)
 env.run(until=hora_de_termino*60)
