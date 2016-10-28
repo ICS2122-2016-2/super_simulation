@@ -1,0 +1,28 @@
+INDICE DE TENTACION:
+Promedio: 5.505791187286377
+Desviacion estandar: 11.148921012878418
+Intervalo de confianza: (-16.345692464437143, 27.357274839009897)
+
+---------------------------------------------------------
+
+METROS CAMINADOS:
+Promedio: 389.977 metros
+Desviacion estandar: 242.41351989588816 metros
+Intervalo de confianza: (-85.144768361524655, 865.09876836152466) metros
+
+---------------------------------------------------------
+
+TIEMPO EN SUPERMERCADO:
+Promedio: 13.14703779540481 minutos
+Desviacion estandar: 8.78786095470864 minutos
+Intervalo de confianza: (-4.0768531769698981, 30.370928767779517) minutos
+
+---------------------------------------------------------
+
+PRODUCTOS VENDIDOS:
+Promedio: 10.484
+Desviacion estandar: 8.180660462505543
+Intervalo de confianza: (-5.5497998762616465, 26.517799876261648)
+
+---------------------------------------------------------
+
