@@ -26,33 +26,34 @@ def calcular_datos_periodos():
         armarFamilias.armar_familias(periodos.index(periodo)+1)
 
     # reordenar familias
-    orden = optimizacion_corr_familiasE4.optimizacion_correlaciones(1)
-    familias_finales = list(range(30))
-    with open('Datos/familiasP1.json', 'r') as file:
-        familias_anteriores = json.load(file)
-    for i in range(30):
-        familias_finales[int(orden[i][1])] = familias_anteriores[int(orden[i][0])]
-    with open('Datos/familiasP1.json', 'w') as file:
-        json.dump(familias_finales, file)
+    for j in range(1, 4):
+        orden = optimizacion_corr_familiasE4.optimizacion_correlaciones(j)
+        familias_finales = list(range(30))
+        with open('Datos/familiasP{}.json'.format(j), 'r') as file:
+            familias_anteriores = json.load(file)
+        for i in range(30):
+            familias_finales[int(orden[i][1])] = familias_anteriores[int(orden[i][0])]
+        with open('Datos/familiasP{}.json'.format(j), 'w') as file:
+            json.dump(familias_finales, file)
 
-    return periodos
 
 def generar_benchmark():
     analisisBenchmark.benchmarck()
 
-def optimizar_con_simulacion(periodo, indices, velocidad, step1, step2, step3=0):
+def optimizar_con_simulacion(periodo, velocidad, step1, step2, step3=0):
     # optimizar con simulacion
+    with open('Datos/periodos', 'rb') as file:
+        periodos = pickle.load(file)
     escenario = ['Datos/familiasP{}.json'.format(periodo), 'Datos/skus_sobrantesP{}.json'.format(periodo)]
-    optimizacion_simulacionE4.optimizar(escenario, 999, 999, 999, 999, step1, step2, step3, periodo=periodo, indices=indices,
+    optimizacion_simulacionE4.optimizar(escenario, 999, 999, 999, 999, step1, step2, step3, periodo=periodo, indices=periodos[periodo-1],
                                     velocidad=velocidad)
 
 
 # calcular_datos_periodos()
 # generar_benchmark()
-# with open('Datos/periodos', 'rb') as file:
-#     periodos = pickle.load(file)
+
 #
-# optimizar_con_simulacion(3, periodos[2], .8*60, 20, 50)
+optimizar_con_simulacion(3, .8*60, 20, 50)
 
 
 
