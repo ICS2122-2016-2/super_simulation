@@ -245,10 +245,13 @@ def optimizar(escenario, restriccion_tiempo_por_prodcuto, restriccion_tiempo_max
     opt.imprimir_output()
 
 
-tnow = time()
-optimizar('escenario1', 999, 999, 999, 999, 30, 100)
-tnow = time() - tnow
-print('tiempo optimizacion:', tnow)
+#tnow = time()
+#optimizar('escenario1', 999, 999, 999, 999, 30, 100)
+#tnow = time() - tnow
+#print('tiempo optimizacion:', tnow)
+
+def simular_en_gui(n_replicas, velocidad, ruta):
+    optimizar(ruta, 999, 999, 999, 999, 30, n_replicas)
 
 
 

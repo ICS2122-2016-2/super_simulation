@@ -1,0 +1,28 @@
+INDICE DE TENTACION - ESCENARIO 2:
+Promedio: 5.711950302124023
+Desviacion estandar: 20.426319122314453
+Intervalo de confianza: (-27.886354791483129, 39.310255395731161)
+
+---------------------------------------------------------
+
+INDICE DE TIEMPO - ESCENARIO 2:
+Promedio: 13.702772781926367
+Desviacion estandar: 7.443400418026376
+Intervalo de confianza: (1.4594686074835739, 25.946076956369154)
+
+---------------------------------------------------------
+
+INDICE DE METROS - ESCENARIO 2:
+Promedio: 443.24
+Desviacion estandar: 214.60514857737772
+Intervalo de confianza: (90.24594300004054, 796.23405699995931)
+
+---------------------------------------------------------
+
+INDICE DE TENTACION - PRODUCTOS 2:
+Promedio: 9.32
+Desviacion estandar: 6.510399843515679
+Intervalo de confianza: (-1.3886547955110657, 20.028654795511063)
+
+---------------------------------------------------------
+
