@@ -2,15 +2,13 @@ import constructorDeMapasE4
 from itertools import permutations
 from math import ceil
 from json import dump
-from time import time
 from numpy import sqrt
 import simulacionE4
-import histogramasAExcel
-
-
-## 1) GENERAR ESCENARIOS ADYACENTES Y UNIRLOS A TRAVES DE UN GRAFO
-## 2) DEFINIR COMO SE COMPORTARA LA SIMULACION -> replicas, donde itera, como se alcena los resultados, si se repetira alguna boleta
-
+from matplotlib import pyplot as plt
+import matplotlib.patches as mpatches
+import pickle
+import random
+import analisisBenchmark
 
 
 CRITERIO_DE_TERMINO1 = 0
@@ -118,13 +116,19 @@ class Optimizacion:
     def opt_step(self, repeticiones, step):
         pop_indexs = []
         #print(len(self.escenarios))
+
+        seed = random.randint(10234, 48375)
+
+        if step == 3:
+            analisisBenchmark.benchmarck(seed, repeticiones)
+
         for escenario in self.escenarios:
             print('simulando escenario', self.escenarios.index(escenario))
             mapas = [escenario[1], self.mtiempo, self.mflujo]
             tentacion, tiempo, metros, productos, hte, hm, hti = simulacionE4.run_simulacion(mapas, debug=2, mt=1,
                                                                                mf=1, replicas=repeticiones, periodo=self.periodo,
                                                                                              indices=self.indices,
-                                                                                             velocidad= self.velocidad)
+                                                                                             velocidad= self.velocidad, seed=seed)
             if tiempo[0]/productos[0] < self.tiempo_por_producto:
 
                 if metros[0] < self.metros_por_producto:
@@ -246,9 +250,25 @@ class Optimizacion:
                 file.write('\n')
                 file.write('---------------------------------------------------------\n\n')
 
-            histogramasAExcel.generar_histograma('', 'Optimizacion/Periodo{}/excel_histogramas_escenario{}.xlsx'.format(
-                self.periodo, str(escenario)),
-                                                 optimizacion=1, te=hte, ti=hti, m=hm)
+            plt.clf()
+            y = []
+            for dato in hte:
+                y.append(int(dato[1]))
+
+            with open('Benchmark/plot_bytes', 'rb') as file:
+                yb = pickle.load(file)
+
+            green_patch = mpatches.Patch(color='green', label='Escenario {}'.format(str(escenario)))
+            blue_patch = mpatches.Patch(color='blue', label='Benchmark')
+
+            plt.legend(handles=[blue_patch, green_patch])
+
+            plt.hist(y, bins=100, normed=True, color='green')
+            plt.hist(yb, bins=100, normed=True, color='blue')
+            plt.title("Histograma Frecuencia - Tentacion")
+            plt.xlabel("Tentacion")
+            plt.ylabel("Frecuencia")
+            plt.savefig('Optimizacion/Periodo{}/grafico_tentacion{}.png'.format(self.periodo, escenario))
 
 
 def optimizar(escenario, restriccion_tiempo_por_prodcuto, restriccion_tiempo_maximo, restriccion_metros_por_prodcuto,
@@ -265,12 +285,6 @@ def optimizar(escenario, restriccion_tiempo_por_prodcuto, restriccion_tiempo_max
                        mtiempo=mapa_tiempo, mflujo=mapa_flujo, periodo=periodo, indices=indices, velocidad=velocidad)
     opt.optimizar()
     opt.imprimir_output()
-
-
-# tnow = time()
-# optimizar(['Datos/familiasP1.json', 'Datos/skus_sobrantesP1.json'], 999, 999, 999, 999, 5, 20)
-# tnow = time() - tnow
-# print('tiempo optimizacion:', tnow)
 
 
 

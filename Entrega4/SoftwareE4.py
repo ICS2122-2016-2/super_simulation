@@ -14,12 +14,13 @@ tnow = time()
 
 def calcular_datos_periodos():
     periodos = generarEstaciones.periodos('retail.dat')
-    with open('Datos/periodos', 'wb') as file:
-        pickle.dump(periodos, file)
 
-    # generar matrices
-    for periodo in periodos:
-        generadorDeMatrizDeRecomendacionEficienteE4.generar_matrices(periodo[0], periodo[1], periodos.index(periodo)+1)
+    # with open('Datos/periodos', 'wb') as file:
+    #     pickle.dump(periodos, file)
+    #
+    # # generar matrices
+    # for periodo in periodos:
+    #     generadorDeMatrizDeRecomendacionEficienteE4.generar_matrices(periodo[0], periodo[1], periodos.index(periodo)+1)
 
     # armar familias
     for periodo in periodos:
@@ -40,6 +41,7 @@ def calcular_datos_periodos():
 def generar_benchmark():
     analisisBenchmark.benchmarck()
 
+
 def optimizar_con_simulacion(periodo, velocidad, step1, step2, step3=0):
     # optimizar con simulacion
     with open('Datos/periodos', 'rb') as file:
@@ -49,11 +51,9 @@ def optimizar_con_simulacion(periodo, velocidad, step1, step2, step3=0):
                                     velocidad=velocidad)
 
 
-# calcular_datos_periodos()
-# generar_benchmark()
-
-#
-optimizar_con_simulacion(3, .8*60, 20, 50)
+#calcular_datos_periodos()
+#generar_benchmark()
+optimizar_con_simulacion(1, .8*60, 2, 2, 1000)
 
 
 

@@ -60,8 +60,6 @@ class Mapa:
                     # posicion: nodo de mas abajo
                     sob = next(sobrantes)
                     self.sobrantes.append(sob)
-                    #print('sob', len(sob))
-
                     g = Gondola(self, posicion, (i for i in fam), (j for j in sob))
                 else:
                     g = Gondola(self, posicion, (i for i in fam))
@@ -279,31 +277,51 @@ class Gondola:
                     nodo = (posicion[0], posicion[1] + (y // 5))
                     coord = (1+6*(posicion[0]-1), 1*5+y)
                     c_cliente = (coord[0] + 1, coord[1])
-                    try:
-                        id = int(next(productos_gondola))
-                        prod = Producto(id, nodo, coord, c_cliente)
-                        self.mapa.nodos[nodo].productos_tentacion.add(id)
-                        self.mapa.productos.update({prod.id: prod})
-                    except StopIteration:
+                    if y in [1, 2, 3, 4, 5]:
                         id = int(next(productos_extra))
                         prod = Producto(id, nodo, coord, c_cliente)
                         self.mapa.nodos[nodo].productos_tentacion.add(id)
                         self.mapa.productos.update({prod.id: prod})
-            for y in range(1, 9 * 5 + 1):
+                    else:
+                        id = int(next(productos_gondola))
+                        prod = Producto(id, nodo, coord, c_cliente)
+                        self.mapa.nodos[nodo].productos_tentacion.add(id)
+                        self.mapa.productos.update({prod.id: prod})
+                    # try:
+                    #     id = int(next(productos_gondola))
+                    #     prod = Producto(id, nodo, coord, c_cliente)
+                    #     self.mapa.nodos[nodo].productos_tentacion.add(id)
+                    #     self.mapa.productos.update({prod.id: prod})
+                    # except StopIteration:
+                    #     id = int(next(productos_extra))
+                    #     prod = Producto(id, nodo, coord, c_cliente)
+                    #     self.mapa.nodos[nodo].productos_tentacion.add(id)
+                    #     self.mapa.productos.update({prod.id: prod})
+            for y in range(1, 9*5 + 1):
                 for z in range(1, 6):
                     nodo = (posicion[0], posicion[1] + (y // 5))
                     coord = (6 * (posicion[0]), 1 * 5 + y)
                     c_cliente = (coord[0] - 1, coord[1])
-                    try:
-                        id = int(next(productos_gondola))
-                        prod = Producto(id, nodo, coord, c_cliente)
-                        self.mapa.nodos[nodo].productos_tentacion.add(id)
-                        self.mapa.productos.update({prod.id: prod})
-                    except StopIteration:
+                    if y in [1, 2, 3, 4, 5]:
                         id = int(next(productos_extra))
                         prod = Producto(id, nodo, coord, c_cliente)
                         self.mapa.nodos[nodo].productos_tentacion.add(id)
                         self.mapa.productos.update({prod.id: prod})
+                    else:
+                        id = int(next(productos_gondola))
+                        prod = Producto(id, nodo, coord, c_cliente)
+                        self.mapa.nodos[nodo].productos_tentacion.add(id)
+                        self.mapa.productos.update({prod.id: prod})
+                    # try:
+                    #     id = int(next(productos_gondola))
+                    #     prod = Producto(id, nodo, coord, c_cliente)
+                    #     self.mapa.nodos[nodo].productos_tentacion.add(id)
+                    #     self.mapa.productos.update({prod.id: prod})
+                    # except StopIteration:
+                    #     id = int(next(productos_extra))
+                    #     prod = Producto(id, nodo, coord, c_cliente)
+                    #     self.mapa.nodos[nodo].productos_tentacion.add(id)
+                    #     self.mapa.productos.update({prod.id: prod})
         elif self.posicion[1] == 11:
             for y in range(1, 8 * 5 + 1):
                 for z in range(1, 6):
@@ -346,16 +364,6 @@ def construir_mapas(archivo_familias, archivo_sobrantes, optimizacion=0, periodo
     else:
         familias = archivo_familias[0]
         sobrantes = archivo_familias[1]
-
-    # if periodo:
-    #     with open('Datos/calvesProductosP{}'.format(periodo), 'rb') as file:
-    #         claves = pickle.load(file)
-    #     for i in range(len(familias)):
-    #         for j in range(len(familias[i])):
-    #             familias[i][j] = claves[familias[i][j]]
-    #     for i in range(len(sobrantes)):
-    #         for j in range(len(sobrantes[i])):
-    #             sobrantes[i][j] = claves[sobrantes[i][j]]
 
     mapa = Mapa(15, 19, (f for f in familias), (s for s in sobrantes), periodo)
     mapa_de_tiempo = MapaDeCalor(mapa)

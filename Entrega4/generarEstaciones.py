@@ -5,7 +5,7 @@ from scipy import sparse
 
 def periodos(datos):
 
-    with open('retail.dat', 'r') as file:
+    with open(datos, 'r') as file:
         lines = file.readlines()
         boletas = []
         for i in range(len(lines)):

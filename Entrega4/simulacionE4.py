@@ -397,7 +397,7 @@ class Cliente:
 
 
 def run_simulacion(escenario, debug=0,mt=1, mf=1, replicas=TAMANO_DE_LA_MUESTRA, tnow=time.time(), periodo=0, indices=(0,0),
-                   velocidad=0):
+                   velocidad=0, seed=0):
 
     #  una replica - describe lo que hace el primer cliente
     if debug == 1:
@@ -542,6 +542,9 @@ def run_simulacion(escenario, debug=0,mt=1, mf=1, replicas=TAMANO_DE_LA_MUESTRA,
 
     # opti
     if debug == 2:
+
+        random.seed(seed)
+
         mapa = escenario[0]
         mapa_de_tiempo = escenario[1]
         mapa_de_flujo = escenario[2]

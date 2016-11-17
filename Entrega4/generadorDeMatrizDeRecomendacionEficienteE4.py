@@ -56,7 +56,6 @@ def generar_matrices(inicio, termino, periodo):
         dump(mapeo_productos_indice, file)
     with open('Datos/valoresProductosP{}'.format(periodo), 'wb') as file:
         dump(mapeo_indice_productos, file)
-    exit()
 
     del mapeo_indice_productos
     del mapeo_productos_indice

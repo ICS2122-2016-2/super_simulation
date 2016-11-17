@@ -1,15 +1,19 @@
 import generarEscenariosBenchmarkE3
 import simulacionE3
 import constructorDeMapasE3
-import histogramasAExcel
 from numpy import mean
+from matplotlib import pyplot as plt
+import matplotlib.patches as mpatches
+from pickle import dump
+import random
 
 
 class OutputBenchmark:
 
-    def __init__(self, n_escenarios, repeticiones):
+    def __init__(self, n_escenarios, repeticiones, seed=0):
         self.escenarios = []
         self.repeticiones = repeticiones
+        self.seed = seed
 
         for i in range(n_escenarios):
             fams = generarEscenariosBenchmarkE3.generar_benchmark()
@@ -41,7 +45,6 @@ class OutputBenchmark:
         m = mean(metros_totales)
         p = mean(productos_totales)
 
-        print('hola')
         with open('Benchmark/estadisticos.txt', 'w') as file:
             file.write('INDICE DE TENTACION:\n')
             file.write('Promedio: {}\n'.format(te))
@@ -64,13 +67,30 @@ class OutputBenchmark:
             file.write('PRODUCTOS VENDIDOS:\n')
             file.write('Promedio: {}\n'.format(p))
             file.write('\n')
-            file.write('---------------------------------------------------------\n\n')
+            file.write('----------------- ----------------------------------------\n\n')
 
-            histogramasAExcel.generar_histograma('', 'Benchmark/excel_histogramas_benchmark.xlsx', 1,
-                                                      hist_tentacion_total, hist_tiempo_total, hist_metros_total)
+        y = []
+        for dato in hist_tentacion_total:
+            y.append(int(dato[1]))
+
+        blue_patch = mpatches.Patch(color='blue', label='Benchmark')
+        plt.legend(handles=[blue_patch])
+
+        plt.hist(y, bins=100, normed=True)
+        plt.title("Histograma Frecuencia - Tentacion")
+        plt.xlabel("Tentacion")
+        plt.ylabel("Frecuencia")
+        plt.savefig('Benchmark/grafico_tentacion_benchmark.png')
+        with open('Benchmark/plot_bytes', 'wb') as file:
+            dump(y, file)
 
 
-def benchmarck():
-    b = OutputBenchmark(10, 1000)
-    b.generar_benchmark()
+def benchmarck(seed=0, replicas=0):
+    if seed:
+        random.seed(seed)
+        b = OutputBenchmark(1, replicas, seed)
+        b.generar_benchmark()
+    else:
+        b = OutputBenchmark(10, 2000)
+        b.generar_benchmark()
 
