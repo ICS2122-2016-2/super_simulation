@@ -247,4 +247,4 @@ def armar_familias(periodo):
 
     with open('Datos/skus_sobrantesP{}.json'.format(periodo), 'w') as file:
         json.dump(skus_sobrantes, file)
-#armar_familias(1)
+

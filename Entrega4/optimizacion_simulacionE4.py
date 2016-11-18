@@ -155,8 +155,8 @@ class Optimizacion:
             if len(self.escenarios) >= 10:
                 self.escenarios = self.escenarios[:10]
         elif step == 2:
-            if len(self.escenarios) >= 3:
-                self.escenarios = self.escenarios[:3]
+            if len(self.escenarios) >= 2:
+                self.escenarios = self.escenarios[:2]
 
     def optimizar(self):
 
