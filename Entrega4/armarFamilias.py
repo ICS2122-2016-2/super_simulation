@@ -76,8 +76,23 @@ def armar_familias(periodo):
 
     #agregar prods a familias
     for z in range(len(productos_por_agregar)):
+        # todo: cambiar metedo de agregar familias
+        # FORMA 1: que se armen eligiendo aleatoriamente  de los que no se han agregado aun
         sku = choice(productos_por_agregar)
         productos_por_agregar.remove(sku)
+
+        # FORMA 2: elegir productos ordenados por orden de ventas decreciente
+        # sku = productos_por_agregar[0]
+        # productos_por_agregar.remove(sku)
+
+        # FORMA 3: elegir productos ordenados por orden de ventas decreciente
+        # sku = productos_por_agregar[-1]
+        # productos_por_agregar.remove(sku)
+
+        # FORMA 4: elegir productos ordenados por orden de ventas decreciente
+        # sku = productos_por_agregar[-1]
+        # productos_por_agregar.remove(sku)
+
         # Calcular correlacion producto con familia
         correlaciones_familias = []
 
@@ -131,8 +146,8 @@ def armar_familias(periodo):
     # Revisar frecuencias de las familias al final
 
     # print(frecuencia_familias)
-    print('diferencia maxima:', max(frecuencia_familias, key=lambda x: frecuencia_familias[x]) - min(frecuencia_familias, key=lambda x: frecuencia_familias[x]))
-    print('frecuancia minima:', min(frecuencia_familias, key=lambda x: frecuencia_familias[x]))
+    print('diferencia maxima:', max(frecuencia_familias.values()) - min(frecuencia_familias.values()))
+    print('frecuencia minima:', min(frecuencia_familias.values()))
 
     t = time() - t
     print('Tiempo:', t)
@@ -211,17 +226,22 @@ def armar_familias(periodo):
 
         sub_fam_ordanada = sorted(fam, key=lambda x: lista_frecuencia_subfamilias[j][fam.index(x)], reverse=True)
 
-        # sub_fam_final = []
-        # for i in range(len(fam)):
-        #     sub_fam_final.append(0)
-        # for k in range(3):
-        #     sub_fam_final[k+5] = sub_fam_ordanada[k]
-        #
-        # for k in range(3, 8):
-        #     sub_fam_final[k-3] = sub_fam_ordanada[k]
-        #
-        # lista_subfamilias[j] = sub_fam_final
-        lista_subfamilias[j] = sub_fam_ordanada
+        # poner mas vendidos en gondolas de abajo al medio, en gondolas de arribaa arriba
+        if j in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]:
+            # sub_fam_final = []
+            # for i in range(len(fam)):
+            #     sub_fam_final.append(0)
+            # for k in range(3):
+            #     sub_fam_final[k+5] = sub_fam_ordanada[k]
+            #
+            # for k in range(3, 8):
+            #     sub_fam_final[k-3] = sub_fam_ordanada[k]
+            #
+            # lista_subfamilias[j] = sub_fam_final
+            sub_fam_ordanada.reverse()
+            lista_subfamilias[j] = sub_fam_ordanada
+        else:
+            lista_subfamilias[j] = sub_fam_ordanada
 
 
     # ordenar subfamilias en familias
@@ -248,3 +268,4 @@ def armar_familias(periodo):
     with open('Datos/skus_sobrantesP{}.json'.format(periodo), 'w') as file:
         json.dump(skus_sobrantes, file)
 
+#armar_familias(1)

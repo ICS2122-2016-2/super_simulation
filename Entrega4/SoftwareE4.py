@@ -23,12 +23,15 @@ def calcular_datos_periodos():
         generadorDeMatrizDeRecomendacionEficienteE4.generar_matrices(periodo[0], periodo[1], periodos.index(periodo)+1)
 
     # armar familias
+    print('armando famlias')
     for periodo in periodos:
         armarFamilias.armar_familias(periodos.index(periodo)+1)
 
+    print('ordenando familias con optimizacion')
     # reordenar familias
     for j in range(1, 4):
         orden = optimizacion_corr_familiasE4.optimizacion_correlaciones(j)
+        print(len(orden))
         familias_finales = list(range(30))
         with open('Datos/familiasP{}.json'.format(j), 'r') as file:
             familias_anteriores = json.load(file)
@@ -36,6 +39,7 @@ def calcular_datos_periodos():
             familias_finales[int(orden[i][1])] = familias_anteriores[int(orden[i][0])]
         with open('Datos/familiasP{}.json'.format(j), 'w') as file:
             json.dump(familias_finales, file)
+    print('Termniado con exito')
 
 
 def generar_benchmark():
@@ -51,9 +55,21 @@ def optimizar_con_simulacion(periodo, velocidad, step1, step2, step3=0):
                                     velocidad=velocidad)
 
 
-calcular_datos_periodos()
+# calcular_datos_periodos()
 #generar_benchmark()
-#optimizar_con_simulacion(1, .8*60, 100, 10000, 15000)
+
+#armarFamilias.armar_familias(1)
+# orden = optimizacion_corr_familiasE4.optimizacion_correlaciones(1)
+# familias_finales = list(range(30))
+# with open('Datos/familiasP{}.json'.format(1), 'r') as file:
+#     familias_anteriores = json.load(file)
+# for i in range(30):
+#     familias_finales[int(orden[i][1])] = familias_anteriores[int(orden[i][0])]
+# with open('Datos/familiasP{}.json'.format(1), 'w') as file:
+#     json.dump(familias_finales, file)
+# print('Termniado con exito')
+
+#optimizar_con_simulacion(1, .8*60, 2, 2, 1000)
 
 
 

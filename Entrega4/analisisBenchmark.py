@@ -31,7 +31,7 @@ class OutputBenchmark:
         for escenario in self.escenarios:
             print('simulando escenario', self.escenarios.index(escenario))
             tentacion, tiempo, metros, productos, hte, hm, hti = simulacionE3.run_simulacion(escenario, debug=3, mt=1,
-                                                                               mf=1, replicas=self.repeticiones)
+                                                                               mf=1, replicas=self.repeticiones, seed=self.seed)
             tentacion_total.append(tentacion[0])
             tiempo_total.append(tiempo[0])
             metros_totales.append(metros[0])
@@ -87,7 +87,7 @@ class OutputBenchmark:
 
 def benchmarck(seed=0, replicas=0):
     if seed:
-        random.seed(seed)
+
         b = OutputBenchmark(1, replicas, seed)
         b.generar_benchmark()
     else:

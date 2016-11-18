@@ -55,7 +55,7 @@ def optimizacion_correlaciones(periodo):
             for posicion1 in posiciones:
                 for posicion2 in posiciones:
                     if posicion1!=posicion2 and familia1!=familia2:
-                        x[familia1,familia2,posicion1,posicion2] = m.addVar(lb=0, ub=1, obj=float(correlacion[(int(familia1), int(familia2))])/distancias[int(posicion1)][int(posicion2)], vtype=GRB.BINARY, name=str(n))
+                        x[familia1,familia2,posicion1,posicion2] = m.addVar(lb=0, ub=1, obj=float(correlacion[(int(familia1), int(familia2))])*distancias[int(posicion1)][int(posicion2)], vtype=GRB.BINARY, name=str(n))
                         n += 1
                     if familia1==familia2 and posicion1!=posicion2:
                         x[familia1,familia2,posicion1,posicion2] = m.addVar(lb=0, ub=1, vtype=GRB.BINARY, name=str(n))
@@ -68,7 +68,7 @@ def optimizacion_correlaciones(periodo):
                         n += 1
 
 
-    m.modelSense = GRB.MAXIMIZE                        
+    m.modelSense = GRB.MAXIMIZE
     m.update()
     #RESTRICCIONES DE ELIMINACION DE VARIABLES INEXISTENTES.
     

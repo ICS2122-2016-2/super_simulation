@@ -1,28 +1,28 @@
 INDICE DE TENTACION - ESCENARIO 0:
-Promedio: 5.366777420043945
-Desviacion estandar: 10.815794944763184
-Intervalo de confianza: (-12.423622123213182, 23.157176963301065)
+Promedio: 5.7860636711120605
+Desviacion estandar: 11.374228477478027
+Intervalo de confianza: (-12.922877293842401, 24.495004636066515)
 
 ---------------------------------------------------------
 
 INDICE DE TIEMPO - ESCENARIO 0:
-Promedio: 15.755597032274569
-Desviacion estandar: 10.139598157163153
-Intervalo de confianza: (-0.9225577723657139, 32.433751836914844)
+Promedio: 16.28490079294503
+Desviacion estandar: 10.627352763841154
+Intervalo de confianza: (-1.1955389455518493, 33.765340531441908)
 
 ---------------------------------------------------------
 
 INDICE DE METROS - ESCENARIO 0:
-Promedio: 528.376
-Desviacion estandar: 310.2226986323643
-Intervalo de confianza: (18.105068991881808, 1038.6469310081179)
+Promedio: 541.173
+Desviacion estandar: 324.83076531803
+Intervalo de confianza: (6.8739375212156801, 1075.4720624787842)
 
 ---------------------------------------------------------
 
 INDICE DE TENTACION - PRODUCTOS 0:
-Promedio: 9.912
-Desviacion estandar: 7.855441678477663
-Intervalo de confianza: (-3.0090517361497486, 22.833051736149745)
+Promedio: 10.455
+Desviacion estandar: 8.235642100091578
+Intervalo de confianza: (-3.0914257786098762, 24.001425778609871)
 
 ---------------------------------------------------------
 

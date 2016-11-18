@@ -383,7 +383,7 @@ class Cliente:
 
 
 
-def run_simulacion(escenario, debug=0,mt=1, mf=1, replicas=TAMANO_DE_LA_MUESTRA, tnow=time.time()):
+def run_simulacion(escenario, debug=0,mt=1, mf=1, replicas=TAMANO_DE_LA_MUESTRA, tnow=time.time(), seed=0):
 
     #  una replica - describe lo que hace el primer cliente
     if debug == 1:
@@ -546,6 +546,8 @@ def run_simulacion(escenario, debug=0,mt=1, mf=1, replicas=TAMANO_DE_LA_MUESTRA,
     if debug == 3:
         mapa, mapa_de_tiempo, mapa_de_flujo = constructorDeMapasE3.construir_mapas('benchmark')
 
+        if seed:
+            random.seed(seed)
         '''Simulacion'''
         env = simpy.Environment()
         super = Supermercado(env, replicas, INDICES_BOLETAS, escenario, mapa_de_tiempo, mapa_de_flujo,
